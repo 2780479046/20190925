@@ -12,7 +12,7 @@ public class Result {
     public static Result on() {
         Result result = new Result();
         result.setCoe(500);
-        result.setSoe("系统内部出错");
+        result.setSoe("  系统内部出错");
 
         return result;
     }
