@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <script src="js/vue.js"></script>
+    <script src="js/axios.js"></script>
+    <script src="js/vue-router.js"></script>
+    <title></title>
+</head>
+<body>
+
+<div id="div1">
+
+    部门名称：<input type="text" name="deptname" v-model="dept.deptname"><br>
+
+        <br><input type="button" value="添加" v-on:click="adddept()" v-if="isall">
+            <input type="button" value="修改" v-on:click="updatedept()" v-if="isall==false">
+
+    <table border="1" width="50%">
+        <tr>
+            <td>编号</td>
+            <td>部门名称</td>
+            <td>操作</td>
+        </tr>
+        <tr v-for="dept in depts">
+            <td>{{dept.oid}}</td>
+            <td>{{dept.deptname}}</td>
+            <td><input type="button" value="修改" v-on:click="toupdatedept(dept)">
+                <input type="button" value="删除" v-on:click="deletedept(dept.oid)"></td>
+        </tr>
+    </table>
+
+</div>
+
+
+<script type="text/javascript">
+
+    var vu = new Vue({
+
+        el: "#div1",
+
+        data: {
+
+            depts:[],
+            dept:{},
+            isall:true
+
+        },
+
+        methods:{
+
+            deletedept:function(oid){
+                axios
+                        .post('dept/delete?oid='+oid)
+                        .then(function (resp) {
+                            vu.listdept();
+                            alert(oid)
+                        })
+                        .catch(function (error) {
+
+                            console.log(error);
+
+                        })
+            },
+
+            updatedept:function(){
+                axios
+                        .post('dept/update',vu.dept)
+                        .then(function (resp) {
+                            vu.listdept();
+                            vu.dept=this.dept={};
+
+                        })
+                        .catch(function (error) {
+
+                            console.log(error);
+
+                        })
+
+            },
+
+            toupdatedept:function(dept){
+
+                vu.dept=dept;
+
+                this.isall=false;
+
+            },
+
+            adddept:function(){
+
+                axios
+                        .post('dept/add',vu.dept)
+                        .then(function (resp) {
+                            vu.listdept();
+
+                        })
+                        .catch(function (error) {
+
+                            console.log(error);
+
+                        })
+
+            },
+
+
+                listdept:function(){
+
+                    axios
+                            .get('dept/listdept')
+                            .then(function (resp) {
+                                vu.depts = resp.data.loe;
+                                comsole.log(vu.depts);
+                            })
+                            .catch(function (error) {
+
+                                console.log(error);
+
+                            })
+                }
+
+            },
+
+        mounted(){
+
+        this.listdept();
+
+    }
+
+
+    });
+
+</script>
+
+</body>
+</html>

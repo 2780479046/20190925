@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+        <configuration>
+
+    <!--修改mybatis在运行时的行为方式（控制台输出sql）-->
+    <settings>
+        <setting name="logImpl" value="STDOUT_LOGGING" />
+    </settings>
+
+    <!--&lt;!&ndash;分页&ndash;&gt;-->
+    <!--<plugins>-->
+        <!--<plugin interceptor="com.github.pagehelper.PageHelper"></plugin>-->
+    <!--</plugins>-->
+
+   <!-- <typeAliases>
+        <typeAlias type="com.lanxin.Bean.Emp" alias="emp"></typeAlias>
+        <typeAlias type="com.lanxin.Bean.Dept" alias="dept"></typeAlias>
+    </typeAliases>-->
+
+           <!-- <environments default="emp">
+                <environment id="emp">
+                    <transactionManager type="JDBC"></transactionManager>
+                    <dataSource type="POOLED">
+                        <property name="driver" value="com.mysql.jdbc.Driver"></property>
+                        <property name="url" value="jdbc:mysql://localhost:3306/zz"></property>
+                        <property name="username" value="root"></property>
+                        <property name="password" value="wcnm123"></property>
+                    </dataSource>
+                </environment>
+            </environments>
+
+
+        <mappers>
+            <mapper resource="mapper/Empmapper.xml"></mapper>
+            <mapper resource="mapper/Deptmapper.xml"></mapper>
+        </mappers>-->
+
+        </configuration>
+

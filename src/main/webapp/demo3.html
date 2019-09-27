@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <script src="js/vue.js"></script>
+    <script src="js/axios.js"></script>
+    <script src="js/vue-router.js"></script>
+    <title></title>
+</head>
+<body>
+
+<div id="div1">
+
+    姓名：<input type="text" name="empname" v-model="emp.empname"><br>
+    性别：<input type="text" name="esex" v-model="emp.esex"><br>
+    年龄：<input type="text" name="eage" v-model="emp.eage"><br>
+    部门：<select v-model="emp.deptid">
+        <option value="">请选择</option>
+        <option v-for="dept in depts" :value="dept.oid">{{dept.deptname}}</option>
+</select><br><input type="button" value="添加" v-on:click="addemp()" v-if="isall">
+            <input type="button" value="修改" v-on:click="updateemp()" v-if="isall==false">
+
+    <table border="1" width="50%">
+        <tr>
+            <td>编号</td>
+            <td>姓名</td>
+            <td>性别</td>
+            <td>年龄</td>
+            <td>部门</td>
+            <td>操作</td>
+        </tr>
+        <tr v-for="emp in emps">
+            <td>{{emp.oid}}</td>
+            <td>{{emp.empname}}</td>
+            <td>{{emp.esex}}</td>
+            <td>{{emp.eage}}</td>
+            <td>{{emp.deptid}}</td>
+            <td><input type="button" value="修改" v-on:click="toupdateemp(emp)">
+                <input type="button" value="删除" v-on:click="deleteemp(emp.oid)"></td>
+        </tr>
+    </table>
+
+</div>
+
+
+<script type="text/javascript">
+
+    var vu = new Vue({
+
+        el: "#div1",
+
+        data: {
+            emps:[],
+            depts:[],
+            emp:{deptid:''},
+            isall:true
+
+        },
+
+        methods:{
+
+            deleteemp:function(oid){
+                axios
+                        .post('emp/delete?oid='+oid)
+                        .then(function (resp) {
+                            vu.listemp();
+                            alert(oid)
+                        })
+                        .catch(function (error) {
+
+                            console.log(error);
+
+                        })
+            },
+
+            updateemp:function(){
+                axios
+                        .post('emp/update',vu.emp)
+                        .then(function (resp) {
+                            vu.listemp();
+                            vu.emp=this.emp={deptid:''};
+
+                        })
+                        .catch(function (error) {
+
+                            console.log(error);
+
+                        })
+
+            },
+
+            toupdateemp:function(emp){
+
+                vu.emp=emp;
+
+                this.isall=false;
+
+            },
+
+            addemp:function(){
+
+                axios
+                        .post('emp/add',vu.emp)
+                        .then(function (resp) {
+                            vu.listemp();
+
+                        })
+                        .catch(function (error) {
+
+                            console.log(error);
+
+                        })
+
+            },
+
+
+            listemp:function(){
+
+                 axios
+                        .get('emp/selemp')
+                        .then(function (resp) {
+
+                            vu.emps = resp.data.loe;
+                            console.log(vu.emps);
+                        })
+                        .catch(function (error) {
+
+                            console.log(error);
+
+                        })
+
+            },
+
+            listdept:function(){
+
+                axios
+                     .get('emp/listdept')
+                     .then(function (resp) {
+                           vu.depts = resp.data.loe;
+                            comsole.log(vu.depts);
+                     })
+                     .catch(function (error) {
+
+                         console.log(error);
+
+                     })
+            }
+
+        },
+
+        mounted(){
+
+        this.listemp();
+        this.listdept();
+
+        }
+
+
+    });
+
+</script>
+
+</body>
+</html>
